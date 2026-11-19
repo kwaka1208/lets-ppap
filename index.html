@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ppap.bat｜フォルダ一括パスワード付きZIP圧縮ツール</title>
+<meta name="description" content="指定したフォルダ直下のサブフォルダごとに、自動生成パスワード付きZIPへ一括圧縮し、パスワード対応表をCSVで出力するWindows用バッチツールです。">
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1d1d1f;
+    --muted: #6e6e73;
+    --line: #d2d2d7;
+    --code-bg: #f5f5f7;
+    --accent: #0066cc;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1e;
+      --fg: #f5f5f7;
+      --muted: #a1a1a6;
+      --line: #3a3a3c;
+      --code-bg: #2c2c2e;
+      --accent: #4da3ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
+    line-height: 1.8;
+    -webkit-text-size-adjust: 100%;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 48px 16px 80px; }
+  h1 { font-size: 1.75rem; line-height: 1.4; margin: 0 0 16px; }
+  h2 { font-size: 1.35rem; margin: 56px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 1.1rem; margin: 32px 0 8px; }
+  p, ul, ol { margin: 0 0 16px; }
+  ul, ol { padding-left: 1.5em; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    background: var(--code-bg);
+    padding: 0.1em 0.4em;
+    border-radius: 4px;
+    overflow-wrap: anywhere;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 16px;
+    border-radius: 8px;
+    overflow-x: auto;
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+  pre code { background: none; padding: 0; font-size: 0.85rem; overflow-wrap: normal; }
+  .table-wrap { overflow-x: auto; margin: 0 0 16px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+  th, td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--code-bg); }
+  .lead { font-size: 1.05rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 0; }
+  .button {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .button.primary { background: var(--accent); color: #fff; }
+  footer { margin-top: 64px; color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>フォルダ一括パスワード付きZIP圧縮ツール (<code>ppap.bat</code>)</h1>
+  <p class="lead">指定したフォルダ直下にあるサブフォルダごとに、中身を自動生成パスワード付きのZIPファイルへ一括圧縮し、ファイル名とパスワードの対応表をCSVで出力するWindows用バッチツールです。</p>
+  <div class="actions">
+    <a class="button primary" href="ppap.bat" download>ppap.bat をダウンロード</a>
+    <a class="button" href="https://github.com/kwaka1208/lets-ppap">GitHub リポジトリ</a>
+  </div>
+
+  <h2>主な機能</h2>
+  <ul>
+    <li><strong>サブフォルダ単位での一括ZIP化</strong>: 対象フォルダ直下の各サブフォルダの中身を <code>サブフォルダ名.zip</code> として圧縮します（空のフォルダは自動的にスキップされます）。</li>
+    <li><strong>パスワードの自動生成</strong>: 視認性の高いランダムな英数字（デフォルト12桁、判別しづらい <code>1</code> / <code>l</code> / <code>I</code> / <code>0</code> / <code>O</code> を除外）をフォルダごとに個別生成します。</li>
+    <li><strong>パスワード一覧のCSV出力</strong>: 圧縮したZIPファイル名とパスワードの組み合わせを <code>password_list_YYYYMMDD_HHMMSS.csv</code>（UTF-8 BOM付き・Excel対応）として出力します。</li>
+    <li><strong>柔軟なフォルダ指定</strong>: ドラッグ＆ドロップ、パス入力、カレントフォルダの自動選択に対応しています。</li>
+  </ul>
+
+  <h2>事前準備</h2>
+  <p>本ツールは圧縮処理に <strong>7-Zip</strong> を使用します。事前にインストールを行ってください。</p>
+  <ol>
+    <li><a href="https://7-zip.opensource.jp/">7-Zip公式サイト</a> からインストーラーをダウンロードします。</li>
+    <li>標準設定（<code>C:\Program Files\7-Zip\</code>）のままインストールします。</li>
+  </ol>
+
+  <h2>使い方</h2>
+  <h3>1. ドラッグ＆ドロップで実行</h3>
+  <p>圧縮したいサブフォルダ群が入っている<strong>親フォルダ</strong>を、<code>ppap.bat</code> のアイコン上にドラッグ＆ドロップします。自動的に処理が開始されます。</p>
+
+  <h3>2. ダブルクリックで実行（カレントフォルダ／パス指定）</h3>
+  <ol>
+    <li><code>ppap.bat</code> をダブルクリックして起動します。</li>
+    <li>対象フォルダのパス入力を求められます。
+      <ul>
+        <li><strong>カレントフォルダを対象にする場合</strong>: 何も入力せずそのまま <code>Enter</code> キーを押します。</li>
+        <li><strong>任意のフォルダを対象にする場合</strong>: フォルダパスを入力（またはウィンドウ内に対象フォルダをドラッグ＆ドロップ）して <code>Enter</code> キーを押します。</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h3>3. コマンドプロンプトから実行</h3>
+  <p>引数に対象フォルダのパスを指定して実行することも可能です。</p>
+  <pre><code>ppap.bat "C:\Users\username\Desktop\TargetFolder"</code></pre>
+
+  <h2>入出力イメージ</h2>
+  <h3>実行前のフォルダ構成</h3>
+<pre><code>TargetFolder/
+├── 顧客A資料/
+│   └── 請求書.pdf
+├── 顧客B資料/
+│   └── 見積書.xlsx
+└── 空フォルダ/</code></pre>
+
+  <h3>実行後のフォルダ構成</h3>
+<pre><code>TargetFolder/
+├── 顧客A資料/
+├── 顧客B資料/
+├── 空フォルダ/
+├── 顧客A資料.zip                         &lt;-- パスワード付きZIP（中身は請求書.pdfのみ）
+├── 顧客B資料.zip                         &lt;-- パスワード付きZIP（中身は見積書.xlsxのみ）
+└── password_list_20261119_123000.csv   &lt;-- パスワード一覧CSV</code></pre>
+
+  <h3>出力されるCSVの内容</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ファイル名</th><th>パスワード</th></tr></thead>
+      <tbody>
+        <tr><td>顧客A資料.zip</td><td>k9XmP4vR2nQw</td></tr>
+        <tr><td>顧客B資料.zip</td><td>H7tY3bZ8cF5e</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>カスタマイズ</h2>
+  <p><code>ppap.bat</code> をテキストエディタで開き、冒頭の設定項目やオプションを編集することで動作を変更できます。</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>設定項目 / 箇所</th><th>デフォルト値</th><th>説明</th></tr></thead>
+      <tbody>
+        <tr><td><code>SEVEN_ZIP</code></td><td><code>C:\Program Files\7-Zip\7z.exe</code></td><td>7-Zipのインストール先が異なる場合にパスを変更します。</td></tr>
+        <tr><td><code>PASS_LENGTH</code></td><td><code>12</code></td><td>自動生成するパスワードの文字数を指定します。</td></tr>
+        <tr><td><code>-mem=ZipCrypto</code></td><td><code>ZipCrypto</code></td><td>Windows標準のエクスプローラーで解凍できる暗号化方式です。より強固な暗号化が必要な場合は <code>-mem=AES256</code> に書き換えてください（解凍側にも7-Zip等が必要になります）。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>注意事項</h2>
+  <ul>
+    <li><strong>既存ファイルの上書き</strong>: 出力先に同名の <code>.zip</code> ファイルが既に存在する場合、確認なしで上書きされます。</li>
+    <li><strong>パスワードCSVの管理</strong>: 出力されたCSVファイルには平文でパスワードが記載されています。外部への誤送信や共有フォルダへの放置にご注意ください。</li>
+    <li><strong>文字コードについて</strong>: <code>ppap.bat</code> を編集・保存する際は、文字コードを必ず <strong>UTF-8</strong> に設定してください（Shift-JIS等で保存すると日本語フォルダ名が正しく処理されない場合があります）。</li>
+  </ul>
+
+  <footer>
+    <p><a href="LICENSE">LICENSE</a> ・ <a href="https://github.com/kwaka1208/lets-ppap">github.com/kwaka1208/lets-ppap</a></p>
+  </footer>
+</main>
+</body>
+</html>
