@@ -15,7 +15,6 @@
 
 1. [7-Zip公式サイト](https://7-zip.opensource.jp/) からインストーラーをダウンロードします。
 2. 標準設定（`C:\Program Files\7-Zip\`）のままインストールします。
-3. [ppap.bat](ppap.bat)をダウンロードします。
 
 ## 使い方
 
