@@ -75,6 +75,8 @@
     line-height: 1.7;
   }
   @media (prefers-color-scheme: dark) { .notice { border-left-color: var(--accent); } }
+  h1 + .tagline { margin-top: -8px; }
+  .tagline { font-size: 1.15rem; font-weight: 600; margin-bottom: 20px; }
   .lead { font-size: 1.05rem; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 0; }
   .button {
@@ -119,6 +121,7 @@
 <body>
 <main>
   <h1>PPAP省力化プロジェクト</h1>
+  <p class="tagline">しかたなくやらないといけないPPAPを、少しでも楽にするためのプロジェクトです。</p>
   <p class="lead">指定したフォルダ直下にあるサブフォルダごとに、中身をパスワード付きのZIPファイルへ一括圧縮し、ファイル名とパスワードの対応表をCSVで出力するツールです。パスワードの生成もすべて行います。Windows版（<code>ppap.bat</code>）と Mac / Linux版（<code>ppap.sh</code>）があります。</p>
   <p class="notice"><a href="https://ja.wikipedia.org/wiki/PPAP_(%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3)" target="_blank" rel="noopener noreferrer">PPAP</a>（パスワード付きZIPでのファイル交換）を推奨するものではありません。とはいえ、取引先の指定によりPPAPしなければならないこともあるので、その業務負担を低減するために作成・公開しているものです。</p>
   <div class="os-tabs" role="tablist" aria-label="OSを選択">
