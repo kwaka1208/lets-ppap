@@ -49,7 +49,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -Command ^
   "  $zipPath = Join-Path $targetDir $zipName;" ^
   "  if (Test-Path -LiteralPath $zipPath) { Remove-Item -LiteralPath $zipPath -Force };" ^
   "  $srcPath = Join-Path $f.FullName '*';" ^
-  "  & $sevenZip a -tzip -p$pass -mem=ZipCrypto $zipPath $srcPath | Out-Null;" ^
+  "  & $sevenZip a -tzip ('-p' + $pass) -mem=ZipCrypto $zipPath $srcPath | Out-Null;" ^
   "  if ($LASTEXITCODE -eq 0) {" ^
   "    Write-Host ('[完了] ' + $zipName);" ^
   "    $results += [PSCustomObject]@{ 'ファイル名' = $zipName; 'パスワード' = $pass };" ^
