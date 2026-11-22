@@ -20,22 +20,8 @@ if not exist "%SEVEN_ZIP%" (
     exit /b 1
 )
 
-:: 対象フォルダの取得（ドラッグ＆ドロップ / 手動入力 / 省略時はカレントフォルダ）
-set "TARGET_DIR=%~1"
-if "%TARGET_DIR%"=="" (
-    echo 現在のカレントフォルダ: %CD%
-    set /p "TARGET_DIR=対象フォルダを入力（何も入力せずEnterでカレントフォルダを対象）: "
-)
-if "%TARGET_DIR%"=="" (
-    set "TARGET_DIR=%CD%"
-)
-set "TARGET_DIR=%TARGET_DIR:"=%"
-
-if not exist "%TARGET_DIR%\" (
-    echo [エラー] 指定されたフォルダが見つかりません: "%TARGET_DIR%"
-    pause
-    exit /b 1
-)
+:: 対象フォルダ（このバッチファイルが置かれているフォルダ）
+set "TARGET_DIR=%~dp0"
 
 echo.
 echo 処理を開始します...

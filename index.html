@@ -139,7 +139,7 @@
     <li><strong>サブフォルダ単位での一括ZIP化</strong>: 対象フォルダ直下の各サブフォルダの中身を <code>サブフォルダ名.zip</code> として圧縮します（空のフォルダは自動的にスキップされます）。</li>
     <li><strong>パスワードの自動生成</strong>: 視認性の高いランダムな英数字（デフォルト12桁、判別しづらい <code>1</code> / <code>l</code> / <code>I</code> / <code>0</code> / <code>O</code> を除外）をフォルダごとに個別生成します。</li>
     <li><strong>パスワード一覧のCSV出力</strong>: 圧縮したZIPファイル名とパスワードの組み合わせを <code>password_list_YYYYMMDD_HHMMSS.csv</code>（UTF-8 BOM付き・Excel対応）として出力します。</li>
-    <li><strong>柔軟なフォルダ指定</strong>: ドラッグ＆ドロップ、パス入力、カレントフォルダの自動選択に対応しています（Mac / Linux版はターミナルへのドラッグ＆ドロップ）。</li>
+    <li><strong>対象フォルダの指定</strong>: Windows版は <code>ppap.bat</code> を置いたフォルダが対象です。Mac / Linux版はパス入力（ターミナルへのドラッグ＆ドロップ可）、カレントフォルダの自動選択に対応しています。</li>
   </ul>
 
   <h2>事前準備</h2>
@@ -168,23 +168,10 @@
     <button type="button" role="tab" data-os-tab="unix" aria-selected="false">Mac / Linux</button>
   </div>
   <div data-os-only="win">
-  <h3>1. ドラッグ＆ドロップで実行</h3>
-  <p>圧縮したいサブフォルダ群が入っている<strong>親フォルダ</strong>を、<code>ppap.bat</code> のアイコン上にドラッグ＆ドロップします。自動的に処理が開始されます。</p>
-
-  <h3>2. ダブルクリックで実行（カレントフォルダ／パス指定）</h3>
   <ol>
-    <li><code>ppap.bat</code> をダブルクリックして起動します。</li>
-    <li>対象フォルダのパス入力を求められます。
-      <ul>
-        <li><strong>カレントフォルダを対象にする場合</strong>: 何も入力せずそのまま <code>Enter</code> キーを押します。</li>
-        <li><strong>任意のフォルダを対象にする場合</strong>: フォルダパスを入力（またはウィンドウ内に対象フォルダをドラッグ＆ドロップ）して <code>Enter</code> キーを押します。</li>
-      </ul>
-    </li>
+    <li>圧縮したいサブフォルダ群が入っている<strong>親フォルダ</strong>に、<code>ppap.bat</code> をコピーします。</li>
+    <li><code>ppap.bat</code> をダブルクリックします。<code>ppap.bat</code> と同じフォルダにあるサブフォルダを対象に、自動的に処理が開始されます。</li>
   </ol>
-
-  <h3>3. コマンドプロンプトから実行</h3>
-  <p>引数に対象フォルダのパスを指定して実行することも可能です。</p>
-  <pre><code>ppap.bat "C:\Users\username\Desktop\TargetFolder"</code></pre>
   </div>
   <div data-os-only="unix">
   <p>ターミナルで <code>ppap.sh</code> を実行します。以下は、ダウンロードフォルダに <code>ppap.sh</code> を保存した場合の例です。</p>
