@@ -78,6 +78,8 @@
   h1 + .tagline { margin-top: -8px; }
   .tagline { font-size: 1.15rem; font-weight: 600; margin-bottom: 20px; }
   .lead { font-size: 1.05rem; }
+  ol.steps > li { margin-bottom: 14px; }
+  ol.steps pre { margin: 8px 0 0; }
   .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0 0; }
   .button {
     display: inline-block;
@@ -122,7 +124,7 @@
 <main>
   <h1>PPAP省力化プロジェクト</h1>
   <p class="tagline">しかたなくやらないといけないPPAPを、少しでも楽にするためのプロジェクトです。</p>
-  <p class="lead">指定したフォルダ直下にあるサブフォルダごとに、中身をパスワード付きのZIPファイルへ一括圧縮し、ファイル名とパスワードの対応表をCSVで出力するツールです。パスワードの生成もすべて行います。Windows版（<code>ppap.bat</code>）と Mac / Linux版（<code>ppap.sh</code>）があります。</p>
+  <p class="lead">フォルダごとに、パスワード付きのZIPファイルをまとめて作るツールです。パスワードは自動で作られ、「どのZIPファイルに、どのパスワードを付けたか」の一覧表も一緒にできあがります。Windows版（<code>ppap.bat</code>）と Mac / Linux版（<code>ppap.sh</code>）があります。</p>
   <p class="notice"><a href="https://ja.wikipedia.org/wiki/PPAP_(%E3%82%BB%E3%82%AD%E3%83%A5%E3%83%AA%E3%83%86%E3%82%A3)" target="_blank" rel="noopener noreferrer">PPAP</a>（パスワード付きZIPでのファイル交換）を推奨するものではありません。とはいえ、取引先の指定によりPPAPしなければならないこともあるので、その業務負担を低減するために作成・公開しているものです。</p>
   <div class="os-tabs" role="tablist" aria-label="OSを選択">
     <button type="button" role="tab" data-os-tab="win" aria-selected="true">Windows</button>
@@ -134,31 +136,29 @@
     <a class="button" href="https://github.com/kwaka1208/lets-ppap">GitHub リポジトリ</a>
   </div>
 
-  <h2>主な機能</h2>
+  <h2>できること</h2>
   <ul>
-    <li><strong>サブフォルダ単位での一括ZIP化</strong>: 対象フォルダ直下の各サブフォルダの中身を <code>サブフォルダ名.zip</code> として圧縮します（空のフォルダは自動的にスキップされます）。</li>
-    <li><strong>パスワードの自動生成</strong>: 視認性の高いランダムな英数字（デフォルト12桁、判別しづらい <code>1</code> / <code>l</code> / <code>I</code> / <code>0</code> / <code>O</code> を除外）をフォルダごとに個別生成します。</li>
-    <li><strong>パスワード一覧のCSV出力</strong>: 圧縮したZIPファイル名とパスワードの組み合わせを <code>password_list_YYYYMMDD_HHMMSS.csv</code>（UTF-8 BOM付き・Excel対応）として出力します。</li>
-    <li><strong>対象フォルダの指定</strong>: Windows版は <code>ppap.bat</code> を置いたフォルダが対象です。Mac / Linux版はパス入力（ターミナルへのドラッグ＆ドロップ可）、カレントフォルダの自動選択に対応しています。</li>
+    <li><strong>フォルダごとにZIPファイルを作ります</strong>: フォルダの名前が、そのままZIPファイルの名前になります（例：「顧客A資料」フォルダ → 「顧客A資料.zip」）。中身が空のフォルダは飛ばします。</li>
+    <li><strong>パスワードを自動で作ります</strong>: ZIPファイルごとに、別々のパスワードを作ります。12文字の英数字で、「1」と「l」、「0」と「O」のような見分けにくい文字は使いません。</li>
+    <li><strong>パスワードの一覧表を作ります</strong>: ZIPファイルの名前とパスワードの組み合わせを、Excelで開ける一覧表（CSVファイル）に書き出します。</li>
   </ul>
 
-  <h2>事前準備</h2>
+  <h2>はじめに準備すること</h2>
   <div class="os-tabs" role="tablist" aria-label="OSを選択">
     <button type="button" role="tab" data-os-tab="win" aria-selected="true">Windows</button>
     <button type="button" role="tab" data-os-tab="unix" aria-selected="false">Mac / Linux</button>
   </div>
   <div data-os-only="win">
-  <p>圧縮処理に <strong>7-Zip</strong> を使用します。事前にインストールを行ってください。</p>
+  <p><strong>7-Zip</strong>（無料の圧縮ソフト）を使います。まだ入っていなければ、先にインストールしてください。</p>
   <ol>
-    <li><a href="https://7-zip.opensource.jp/" target="_blank" rel="noopener noreferrer">7-Zip公式サイト</a> からインストーラーをダウンロードします。</li>
-    <li>標準設定（<code>C:\Program Files\7-Zip\</code>）のままインストールします。</li>
+    <li><a href="https://7-zip.opensource.jp/" target="_blank" rel="noopener noreferrer">7-Zip公式サイト</a> から、インストール用のファイルをダウンロードします。</li>
+    <li>ダウンロードしたファイルを開き、インストール先は変えずに、そのままインストールします。</li>
   </ol>
   </div>
   <div data-os-only="unix">
   <ul>
-    <li><strong>Mac</strong>: 追加のインストールは不要です（標準で入っている <code>zip</code> と <code>perl</code> を使います）。</li>
-    <li><strong>Linux</strong>: <code>zip</code> と <code>perl</code> を使います。<code>zip</code> が入っていない場合はインストールしてください（例: <code>sudo apt install zip</code>）。</li>
-    <li>暗号化方式を <code>AES256</code> に変更する場合のみ、7-Zipが必要です（Mac: <code>brew install sevenzip</code>、Linux: <code>sudo apt install p7zip-full</code> など）。</li>
+    <li><strong>Mac</strong>: 追加で入れるものはありません。</li>
+    <li><strong>Linux</strong>: <code>zip</code> コマンドを使います。入っていない場合はインストールしてください（例: <code>sudo apt install zip</code>）。</li>
   </ul>
   </div>
 
@@ -168,47 +168,49 @@
     <button type="button" role="tab" data-os-tab="unix" aria-selected="false">Mac / Linux</button>
   </div>
   <div data-os-only="win">
-  <ol>
-    <li>圧縮したいサブフォルダ群が入っている<strong>親フォルダ</strong>に、<code>ppap.bat</code> をコピーします。</li>
-    <li><code>ppap.bat</code> をダブルクリックします。<code>ppap.bat</code> と同じフォルダにあるサブフォルダを対象に、自動的に処理が開始されます。</li>
+  <ol class="steps">
+    <li><strong>作業用のフォルダを1つ用意します。</strong><br>デスクトップなどに、新しいフォルダを作ってください（例：「送付用」）。</li>
+    <li><strong>ZIPにしたいフォルダと <code>ppap.bat</code> を、作業用のフォルダに入れます。</strong><br>ZIPにしたいフォルダはいくつ入れてもかまいません。</li>
+    <li><strong><code>ppap.bat</code> をダブルクリックします。</strong><br>黒い画面が開いて、ZIPファイル作りが始まります。</li>
+    <li><strong>「すべての処理が終了しました。」と表示されたら、何かキーを押して画面を閉じます。</strong></li>
+    <li><strong>作業用のフォルダに、ZIPファイルとパスワードの一覧表ができています。</strong></li>
   </ol>
   </div>
   <div data-os-only="unix">
-  <p>ターミナルで <code>ppap.sh</code> を実行します。以下は、ダウンロードフォルダに <code>ppap.sh</code> を保存した場合の例です。</p>
-  <h3>1. フォルダを指定して実行</h3>
-  <pre><code>bash ~/Downloads/ppap.sh "/Users/username/Desktop/TargetFolder"</code></pre>
-
-  <h3>2. 対話形式で実行（カレントフォルダ／パス指定）</h3>
-  <ol>
-    <li>ターミナルで <code>bash ~/Downloads/ppap.sh</code> を実行します。</li>
-    <li>対象フォルダのパス入力を求められます。
-      <ul>
-        <li><strong>カレントフォルダを対象にする場合</strong>: 何も入力せずそのまま <code>Enter</code> キーを押します。</li>
-        <li><strong>任意のフォルダを対象にする場合</strong>: フォルダパスを入力（またはターミナルに対象フォルダをドラッグ＆ドロップ）して <code>Enter</code> キーを押します。</li>
-      </ul>
-    </li>
+  <p>「ターミナル」というアプリを使います。以下は、<code>ppap.sh</code> を「ダウンロード」フォルダに保存した場合の手順です。</p>
+  <ol class="steps">
+    <li><strong>作業用のフォルダを1つ用意し、ZIPにしたいフォルダを入れます。</strong></li>
+    <li><strong>ターミナルを開きます。</strong><br>Macの場合は「アプリケーション」→「ユーティリティ」→「ターミナル」です。</li>
+    <li><strong>次のように入力して、<code>Enter</code> キーを押します。</strong>
+      <pre><code>bash ~/Downloads/ppap.sh</code></pre></li>
+    <li><strong>「対象フォルダを入力」と表示されたら、作業用のフォルダをターミナルの画面にドラッグ＆ドロップして、<code>Enter</code> キーを押します。</strong><br>ZIPファイル作りが始まります。</li>
+    <li><strong>「すべての処理が終了しました。」と表示されたら完了です。</strong><br>作業用のフォルダに、ZIPファイルとパスワードの一覧表ができています。</li>
   </ol>
+  <p>慣れている方は、<code>bash ~/Downloads/ppap.sh "作業用のフォルダのパス"</code> のように、フォルダを直接指定して実行することもできます。</p>
   </div>
 
-  <h2>入出力イメージ</h2>
-  <h3>実行前のフォルダ構成</h3>
-<pre><code>TargetFolder/
+  <h2>使うとこうなります</h2>
+  <h3>実行する前</h3>
+<pre><code>送付用/
+├── ppap.bat  ← Windows版の場合
 ├── 顧客A資料/
 │   └── 請求書.pdf
 ├── 顧客B資料/
 │   └── 見積書.xlsx
 └── 空フォルダ/</code></pre>
 
-  <h3>実行後のフォルダ構成</h3>
-<pre><code>TargetFolder/
+  <h3>実行した後</h3>
+<pre><code>送付用/
+├── ppap.bat
 ├── 顧客A資料/
 ├── 顧客B資料/
 ├── 空フォルダ/
-├── 顧客A資料.zip                         &lt;-- パスワード付きZIP（中身は請求書.pdfのみ）
-├── 顧客B資料.zip                         &lt;-- パスワード付きZIP（中身は見積書.xlsxのみ）
-└── password_list_20261119_123000.csv   &lt;-- パスワード一覧CSV</code></pre>
+├── 顧客A資料.zip                      ← パスワード付きZIP（中身は請求書.pdf）
+├── 顧客B資料.zip                      ← パスワード付きZIP（中身は見積書.xlsx）
+└── password_list_20261119_123000.csv  ← パスワードの一覧表</code></pre>
+  <p>元のフォルダはそのまま残ります。中身が空のフォルダはZIPファイルになりません。</p>
 
-  <h3>出力されるCSVの内容</h3>
+  <h3>パスワードの一覧表の中身</h3>
   <div class="table-wrap">
     <table>
       <thead><tr><th>ファイル名</th><th>パスワード</th></tr></thead>
@@ -219,44 +221,45 @@
     </table>
   </div>
 
-  <h2>カスタマイズ</h2>
+  <h2>気をつけること</h2>
+  <ul>
+    <li><strong>同じ名前のZIPファイルは上書きされます</strong>: 作業用のフォルダに同じ名前のZIPファイルがすでにあると、確認なしで新しいものに置き換わります。</li>
+    <li><strong>パスワードの一覧表の扱いに注意してください</strong>: 一覧表には、パスワードがそのまま書かれています。ZIPファイルと一緒にメールで送ったり、共有フォルダに置いたままにしたりしないでください。</li>
+    <li><strong>送る前に一度開けてみると安心です</strong>: できたZIPファイルが、一覧表のパスワードで開けるか確かめてから送ってください。</li>
+  </ul>
+
+  <h2>設定を変えたいとき（詳しい方向け）</h2>
   <div class="os-tabs" role="tablist" aria-label="OSを選択">
     <button type="button" role="tab" data-os-tab="win" aria-selected="true">Windows</button>
     <button type="button" role="tab" data-os-tab="unix" aria-selected="false">Mac / Linux</button>
   </div>
   <div data-os-only="win">
-  <p><code>ppap.bat</code> をテキストエディタで開き、冒頭の設定項目やオプションを編集することで動作を変更できます。</p>
+  <p><code>ppap.bat</code> をテキストエディタで開き、ファイルの最初のほうにある設定を書き換えると、動きを変えられます。</p>
   <div class="table-wrap">
     <table class="settings">
-      <thead><tr><th>設定項目 / 箇所</th><th>デフォルト値</th><th>説明</th></tr></thead>
+      <thead><tr><th>設定</th><th>最初の値</th><th>説明</th></tr></thead>
       <tbody>
-        <tr><td><code>SEVEN_ZIP</code></td><td><code>C:\Program Files\7-Zip\7z.exe</code></td><td>7-Zipのインストール先が異なる場合にパスを変更します。</td></tr>
-        <tr><td><code>PASS_LENGTH</code></td><td><code>12</code></td><td>自動生成するパスワードの文字数を指定します。</td></tr>
-        <tr><td><code>-mem=ZipCrypto</code></td><td><code>ZipCrypto</code></td><td>Windows標準のエクスプローラーで解凍できる暗号化方式です。より強固な暗号化が必要な場合は <code>-mem=AES256</code> に書き換えてください（解凍側にも7-Zip等が必要になります）。</td></tr>
+        <tr><td><code>SEVEN_ZIP</code></td><td><code>C:\Program Files\7-Zip\7z.exe</code></td><td>7-Zipを別の場所にインストールした場合は、その場所に書き換えます。</td></tr>
+        <tr><td><code>PASS_LENGTH</code></td><td><code>12</code></td><td>パスワードの文字数です。</td></tr>
+        <tr><td><code>-mem=ZipCrypto</code></td><td><code>ZipCrypto</code></td><td>暗号化の方式です。この方式なら、受け取った人はWindowsの標準機能で開けます。より強い暗号化にしたい場合は <code>-mem=AES256</code> に書き換えます（受け取った人にも7-Zipなどが必要になります）。</td></tr>
       </tbody>
     </table>
   </div>
+  <p><code>ppap.bat</code> を書き換えて保存するときは、文字コードを必ず <strong>UTF-8</strong> にしてください。ほかの文字コード（Shift-JISなど）で保存すると、日本語のフォルダ名をうまく扱えなくなることがあります。</p>
   </div>
   <div data-os-only="unix">
-  <p><code>ppap.sh</code> をテキストエディタで開き、冒頭の設定項目を編集することで動作を変更できます。</p>
+  <p><code>ppap.sh</code> をテキストエディタで開き、ファイルの最初のほうにある設定を書き換えると、動きを変えられます。</p>
   <div class="table-wrap">
     <table class="settings">
-      <thead><tr><th>設定項目</th><th>デフォルト値</th><th>説明</th></tr></thead>
+      <thead><tr><th>設定</th><th>最初の値</th><th>説明</th></tr></thead>
       <tbody>
-        <tr><td><code>PASS_LENGTH</code></td><td><code>12</code></td><td>自動生成するパスワードの文字数を指定します。</td></tr>
-        <tr><td><code>ENCRYPTION</code></td><td><code>ZipCrypto</code></td><td>Windows標準のエクスプローラーで解凍できる暗号化方式です。より強固な暗号化が必要な場合は <code>AES256</code> に書き換えてください（7-Zipが必要です。解凍側にも7-Zip等が必要になります）。</td></tr>
+        <tr><td><code>PASS_LENGTH</code></td><td><code>12</code></td><td>パスワードの文字数です。</td></tr>
+        <tr><td><code>ENCRYPTION</code></td><td><code>ZipCrypto</code></td><td>暗号化の方式です。この方式なら、受け取った人はWindowsの標準機能で開けます。より強い暗号化にしたい場合は <code>AES256</code> に書き換えます（7-Zipのインストールが必要です。受け取った人にも7-Zipなどが必要になります）。</td></tr>
       </tbody>
     </table>
   </div>
+  <p>Mac / Linux版は、ZIPファイルの中の日本語のファイル名が、Windowsで開いても文字化けしないように記録します。Macが自動で作る <code>.DS_Store</code> というファイルはZIPに入れません。</p>
   </div>
-
-  <h2>注意事項</h2>
-  <ul>
-    <li><strong>既存ファイルの上書き</strong>: 出力先に同名の <code>.zip</code> ファイルが既に存在する場合、確認なしで上書きされます。</li>
-    <li><strong>パスワードCSVの管理</strong>: 出力されたCSVファイルには平文でパスワードが記載されています。外部への誤送信や共有フォルダへの放置にご注意ください。</li>
-    <li><strong>文字コードについて</strong>: <code>ppap.bat</code> を編集・保存する際は、文字コードを必ず <strong>UTF-8</strong> に設定してください（Shift-JIS等で保存すると日本語フォルダ名が正しく処理されない場合があります）。</li>
-    <li><strong>Mac / Linux版のファイル名の扱い</strong>: ZIP内の日本語ファイル名は、Windowsで解凍しても文字化けしない形式に補正して記録します。Macが自動で作る <code>.DS_Store</code> は圧縮対象から除外します。</li>
-  </ul>
 
   <footer>
     <p><a href="LICENSE">LICENSE</a> ・ <a href="https://github.com/kwaka1208/lets-ppap">github.com/kwaka1208/lets-ppap</a></p>
