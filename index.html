@@ -190,9 +190,15 @@
   </div>
 
   <h2>使うとこうなります</h2>
+  <div class="os-tabs" role="tablist" aria-label="OSを選択">
+    <button type="button" role="tab" data-os-tab="win" aria-selected="true">Windows</button>
+    <button type="button" role="tab" data-os-tab="unix" aria-selected="false">Mac / Linux</button>
+  </div>
+  <p>作業用のフォルダ「送付用」に、ZIPにしたいフォルダを3つ入れた場合の例です。</p>
+  <div data-os-only="win">
   <h3>実行する前</h3>
 <pre><code>送付用/
-├── ppap.bat  ← Windows版の場合
+├── ppap.bat
 ├── 顧客A資料/
 │   └── 請求書.pdf
 ├── 顧客B資料/
@@ -208,6 +214,25 @@
 ├── 顧客A資料.zip                      ← パスワード付きZIP（中身は請求書.pdf）
 ├── 顧客B資料.zip                      ← パスワード付きZIP（中身は見積書.xlsx）
 └── password_list_20261119_123000.csv  ← パスワードの一覧表</code></pre>
+  </div>
+  <div data-os-only="unix">
+  <h3>実行する前</h3>
+<pre><code>送付用/
+├── 顧客A資料/
+│   └── 請求書.pdf
+├── 顧客B資料/
+│   └── 見積書.xlsx
+└── 空フォルダ/</code></pre>
+
+  <h3>実行した後</h3>
+<pre><code>送付用/
+├── 顧客A資料/
+├── 顧客B資料/
+├── 空フォルダ/
+├── 顧客A資料.zip                      ← パスワード付きZIP（中身は請求書.pdf）
+├── 顧客B資料.zip                      ← パスワード付きZIP（中身は見積書.xlsx）
+└── password_list_20261119_123000.csv  ← パスワードの一覧表</code></pre>
+  </div>
   <p>元のフォルダはそのまま残ります。中身が空のフォルダはZIPファイルになりません。</p>
 
   <h3>パスワードの一覧表の中身</h3>

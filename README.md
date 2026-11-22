@@ -58,11 +58,12 @@ Windows版（`ppap.bat`）と Mac / Linux版（`ppap.sh`）があります。
 
 ## 使うとこうなります
 
+作業用のフォルダ「送付用」に、ZIPにしたいフォルダを3つ入れた場合の例です。Windows版では、このフォルダに `ppap.bat` も入れて実行します（実行した後も `ppap.bat` はそのまま残ります）。
+
 ### 実行する前
 
 ```text
 送付用/
-├── ppap.bat  ← Windows版の場合
 ├── 顧客A資料/
 │   └── 請求書.pdf
 ├── 顧客B資料/
@@ -74,7 +75,6 @@ Windows版（`ppap.bat`）と Mac / Linux版（`ppap.sh`）があります。
 
 ```text
 送付用/
-├── ppap.bat
 ├── 顧客A資料/
 ├── 顧客B資料/
 ├── 空フォルダ/
