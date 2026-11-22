@@ -177,16 +177,15 @@
   </ol>
   </div>
   <div data-os-only="unix">
-  <p>「ターミナル」というアプリを使います。以下は、<code>ppap.sh</code> を「ダウンロード」フォルダに保存した場合の手順です。</p>
+  <p>「ターミナル」というアプリを使います。</p>
   <ol class="steps">
-    <li><strong>作業用のフォルダを1つ用意し、ZIPにしたいフォルダを入れます。</strong></li>
+    <li><strong>作業用のフォルダを1つ用意します。</strong><br>デスクトップなどに、新しいフォルダを作ってください（例：「送付用」）。</li>
+    <li><strong>ZIPにしたいフォルダと <code>ppap.sh</code> を、作業用のフォルダに入れます。</strong><br>ZIPにしたいフォルダはいくつ入れてもかまいません。</li>
     <li><strong>ターミナルを開きます。</strong><br>Macの場合は「アプリケーション」→「ユーティリティ」→「ターミナル」です。</li>
-    <li><strong>次のように入力して、<code>Enter</code> キーを押します。</strong>
-      <pre><code>bash ~/Downloads/ppap.sh</code></pre></li>
-    <li><strong>「対象フォルダを入力」と表示されたら、作業用のフォルダをターミナルの画面にドラッグ＆ドロップして、<code>Enter</code> キーを押します。</strong><br>ZIPファイル作りが始まります。</li>
+    <li><strong><code>bash</code> と入力し、半角スペースを1つ空けます。</strong></li>
+    <li><strong>作業用のフォルダに入れた <code>ppap.sh</code> を、ターミナルの画面にドラッグ＆ドロップして、<code>Enter</code> キーを押します。</strong><br>画面には <code>bash /Users/（名前）/Desktop/送付用/ppap.sh</code> のように表示されます。<code>Enter</code> キーを押すと、ZIPファイル作りが始まります。</li>
     <li><strong>「すべての処理が終了しました。」と表示されたら完了です。</strong><br>作業用のフォルダに、ZIPファイルとパスワードの一覧表ができています。</li>
   </ol>
-  <p>慣れている方は、<code>bash ~/Downloads/ppap.sh "作業用のフォルダのパス"</code> のように、フォルダを直接指定して実行することもできます。</p>
   </div>
 
   <h2>使うとこうなります</h2>
@@ -218,6 +217,7 @@
   <div data-os-only="unix">
   <h3>実行する前</h3>
 <pre><code>送付用/
+├── ppap.sh
 ├── 顧客A資料/
 │   └── 請求書.pdf
 ├── 顧客B資料/
@@ -226,6 +226,7 @@
 
   <h3>実行した後</h3>
 <pre><code>送付用/
+├── ppap.sh
 ├── 顧客A資料/
 ├── 顧客B資料/
 ├── 空フォルダ/

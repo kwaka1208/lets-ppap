@@ -1,6 +1,6 @@
 #!/bin/bash
 # フォルダ一括パスワード付きZIP圧縮ツール（Mac / Linux版）
-# 使い方: bash ppap.sh [対象フォルダ]
+# 使い方: 圧縮したいフォルダと同じフォルダにこのファイルを置き、bash ppap.sh で実行します
 
 # ==========================================
 # 設定項目
@@ -45,24 +45,8 @@ case "$ENCRYPTION" in
     ;;
 esac
 
-# 対象フォルダの取得（引数 / 手動入力 / 省略時はカレントフォルダ）
-TARGET_DIR="${1:-}"
-if [ -z "$TARGET_DIR" ]; then
-  echo "現在のカレントフォルダ: $PWD"
-  printf "対象フォルダを入力（何も入力せずEnterでカレントフォルダを対象）: "
-  IFS= read -r TARGET_DIR
-fi
-# ターミナルへのドラッグ＆ドロップで付く前後の空白・引用符・エスケープを取り除く
-TARGET_DIR="$(printf '%s' "$TARGET_DIR" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^['\"]//" -e "s/['\"]\$//" -e 's/\\\(.\)/\1/g')"
-if [ -z "$TARGET_DIR" ]; then
-  TARGET_DIR="$PWD"
-fi
-
-if [ ! -d "$TARGET_DIR" ]; then
-  echo "[エラー] 指定されたフォルダが見つかりません: \"$TARGET_DIR\""
-  exit 1
-fi
-TARGET_DIR="$(cd "$TARGET_DIR" && pwd)"
+# 対象フォルダ（このスクリプトが置かれているフォルダ）
+TARGET_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo
 echo "処理を開始します..."
